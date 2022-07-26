@@ -1,0 +1,29 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Todo.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:icon="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="450"
+             x:Class="Todo.Views.TodoListView"
+             x:CompileBindings="True"
+             x:DataType="vm:TodoListViewModel"
+             d:DataContext="{x:Static vm:DesignData.DesignTimeTodoListViewModel}">
+    <ItemsControl Items="{Binding Items}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Spacing="8">
+                    <Button CornerRadius="20"
+                            Background="{StaticResource SystemChromeMediumColor}"
+                            icon:Attached.Icon="fa-solid fa-plus"
+                            Width="40" Height="40"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Command="{ReflectionBinding $parent[ItemsControl].DataContext.AddTodoItem}"
+                            ToolTip.Tip="Add new todo"/>
+                </StackPanel>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
+</UserControl>

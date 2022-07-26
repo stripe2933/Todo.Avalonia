@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Todo.ViewModels"
+             xmlns:view="using:Todo.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="120"
+             x:Class="Todo.Views.UpcomingTodoListView"
+             x:CompileBindings="True"
+             x:DataType="vm:UpcomingTodoListViewModel"
+             d:DataContext="{x:Static vm:DesignData.DesignTimeUpcomingTodoListViewModel}">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Hidden">
+        <ItemsControl Items="{Binding UpcomingItems}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:TodoItemViewModel">
+                    <view:UpcomingTodoItemView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="8"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

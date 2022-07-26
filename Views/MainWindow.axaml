@@ -1,0 +1,64 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Todo.ViewModels"
+        xmlns:view="using:Todo.Views"
+        xmlns:behavior="using:Todo.Views.Behaviors"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="Todo.Views.MainWindow"
+        x:CompileBindings="True"
+        x:DataType="vm:MainWindowViewModel"
+        d:DataContext="{x:Static vm:DesignData.DesignTimeMainWindowViewModel}"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Todo"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        Width="640" Height="480"
+        ExtendClientAreaToDecorationsHint="True">
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="{StaticResource SystemChromeLowColor}"
+                    TintOpacity="1"
+                    MaterialOpacity="0.85" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        
+        <!-- TODO: get window titlebar height by converter -->
+        <Grid VerticalAlignment="Top"
+              RowDefinitions="Auto,16,*"
+              Margin="20,40,20,20">
+            <!-- Current header -->
+            <TextBlock Text="{Binding #ScrollViewer.(behavior:HeaderedScrollViewer.CurrentHeaderText), TargetNullValue='Upcoming Todos'}"
+                       FontSize="32"
+                       FontWeight="Bold"/>
+        
+            <ScrollViewer x:Name="ScrollViewer" 
+                          Grid.Row="2" 
+                          HorizontalScrollBarVisibility="Disabled" 
+                          VerticalScrollBarVisibility="Auto"
+                          behavior:HeaderedScrollViewer.TargetHeader="header">
+                <StackPanel Orientation="Vertical" Spacing="12">
+                    <StackPanel.Styles>
+                        <!-- Style for header texts -->
+                        <Style Selector="TextBlock.header">
+                            <Setter Property="FontSize" Value="24"/>
+                            <Setter Property="FontWeight" Value="DemiBold"/>
+                        </Style>
+                    </StackPanel.Styles>
+                    
+                    <!-- The below line is intentionally commented -->
+                    <!-- <TextBlock Text="Upcoming Todos" Classes="header"/> -->
+                    <ContentControl Content="{Binding UpcomingTodoList}"/>
+        
+                    <TextBlock Text="Todos" Classes="header"/>
+                    <ContentControl Content="{Binding TodoList}"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Panel>
+
+</Window>

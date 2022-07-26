@@ -1,0 +1,66 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Todo.ViewModels"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"             
+             xmlns:icon="clr-namespace:Projektanker.Icons.Avalonia;assembly=Projektanker.Icons.Avalonia"
+             xmlns:behavior="using:Todo.Views.Behaviors"
+             mc:Ignorable="d" d:DesignWidth="400"
+             d:DataContext="{x:Static vm:DesignData.DesignTimeTodoItemViewModel}"
+             x:Class="Todo.Views.TodoItemView"
+             x:DataType="vm:TodoItemViewModel">
+    <Border CornerRadius="4" 
+            Padding="8" 
+            Background="{StaticResource SystemChromeMediumColor}">
+        <DockPanel>
+            <Button DockPanel.Dock="Right" 
+                    Background="Transparent"
+                    icon:Attached.Icon="fa-solid fa-xmark"
+                    Foreground="Gray" 
+                    Width="32" 
+                    Height="32" 
+                    FontSize="12"
+                    CornerRadius="16"
+                    VerticalAlignment="Center"
+                    Command="{ReflectionBinding $parent[ItemsControl].DataContext.DeleteTodoItem}"
+                    CommandParameter="{Binding}"/>
+            
+            <CheckBox IsChecked="{Binding IsFinished}" VerticalAlignment="Center"/>
+            <WrapPanel>
+                <!-- Cannot make TextBox inside the CheckBox because if press space bar at TextBox focused, the CheckBox IsChecked status is inverted. -->
+                <TextBox Background="Transparent"
+                         BorderBrush="Transparent"
+                         BorderThickness="0"
+                         AcceptsReturn="False"
+                         Cursor="IBeam"
+                         Watermark="Description"
+                         Margin="0,0,4,0"
+                         AttachedToVisualTree="DescriptionTextBox_OnAttachedToVisualTree">
+                    <i:Interaction.Behaviors>
+                        <!-- Make TextBox update the Description property when it unfocused -->
+                        <behavior:LostFocusUpdateBindingBehavior Text="{Binding Description}"/>
+                        <!-- Make TextBox lost focus when Enter key pressed -->
+                        <behavior:LostFocusWhenEnterBehavior/>
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                
+                <Button VerticalAlignment="Center">
+                    <Button.Flyout>
+                        <Flyout Placement="BottomEdgeAlignedLeft">
+                            <!-- TODO: Add button for unselect the selected date -->
+                            <!-- <StackPanel Spacing="8" Orientation="Horizontal"> -->
+                                <DatePicker x:Name="DueDatePicker" SelectedDate="{Binding DueDate}"/>
+                            <!--     <Button Click="UnselectDueDatePickerButton_Click">No due date</Button> -->
+                            <!-- </StackPanel> -->
+                        </Flyout>    
+                    </Button.Flyout>
+                    
+                    <TextBlock x:Name="DueDateText"
+                               Classes.due-over="{Binding IsDueOver}"
+                               Text="{Binding DueDate, StringFormat='{}Due on {0:MM-dd}', TargetNullValue='No due date'}"/>
+                </Button>
+            </WrapPanel>
+        </DockPanel>
+    </Border>
+</UserControl>
